@@ -1,2 +1,45 @@
 ---
 # tasks file for ansible-homegw-openvpn
+- name: install server packages
+  become: True
+  apt: pkg={{ item }} update_cache=yes cache_valid_time=1200
+  with_items:
+    - openvpn
+  register: result
+
+- name: setup server.conf file
+  become: True
+  template:
+    src:   server.conf.j2
+    dest:  /etc/openvpn/server.conf
+    owner: "{{ homegw_openvpn_script_permission.owner }}"
+    group: "{{ homegw_openvpn_script_permission.group }}"
+    mode:  "{{ homegw_openvpn_script_permission.mode }}"
+  register: result
+
+- name: setup config directory
+  become: True
+  file:
+    path: "{{ homegw_openvpn_root_dirpath }}/{{ homegw_openvpn_name }}"
+    status: directory
+    owner: "{{ homegw_openvpn_script_permission.owner }}"
+    group: "{{ homegw_openvpn_script_permission.group }}"
+    mode:  700
+  register: result
+  
+- name: setup if-pre-up.d file
+  become: True
+  copy: 
+    src:   "files/{{ item }}"
+    dest:  "{{ homegw_openvpn_root_dirpath }}/{{ homegw_openvpn_name }}/{{ item }}"
+    owner: "{{ homegw_openvpn_script_permission.owner }}"
+    group: "{{ homegw_openvpn_script_permission.group }}"
+    mode:  "{{ homegw_openvpn_script_permission.mode }}"
+  with_items:
+    - cacert.pem
+    - dh2048.pem
+    - hmac_secret
+    - server_cert.pem
+    - server_key_nopass.pem
+  register: result
+

@@ -1,0 +1,29 @@
+#
+# for external clients
+# - Do not use for internal (163.143.0.0/16) clients
+#
+port {{ homegw_openvpn_port }}
+proto udp
+tls-server
+tls-auth {{ homegw_openvpn_name }}/{{ homegw_openvpn_tlsauth_filename }}
+dev tun
+dh {{ homegw_openvpn_name }}/{{ homegw_openvpn_dh_filename }}
+ca {{ homegw_openvpn_name }}/{{ homegw_openvpn_cacert_filename }}
+cert {{ homegw_openvpn_name }}/{{ homegw_openvpn_servercert_filename }}
+key {{ homegw_openvpn_name }}/{{ homegw_openvpn_serverkey_filename }}
+
+server 10.8.8.0 255.255.255.0
+ifconfig-pool-persist {{ homegw_openvpn_name }}/{{ homegw_openvpn_poolpersist_filename }}
+keepalive 10 120
+comp-lzo
+persist-key
+persist-tun
+status openvpn-status_{{ homegw_openvpn_name }}.log
+verb 3
+
+## network definition
+topology subnet
+push "route {{ homegw_openvpn_global_hostprefix|ipaddr('address') }} 255.255.255.255 net_gateway"
+push "route 163.143.0.0 255.255.0.0"
+push "route {{ homegw_openvpn_global_hostprefix|ipaddr('network') }} {{ homegw_openvpn_global_hostprefix|ipaddr('netmask') }}"
+client-to-client

@@ -46,7 +46,7 @@
 - name: modify /etc/default/openvpn file
   become: True
   lineinfile:
-    path: {{ homegw_openvpn_default_filepath }}
+    path: "{{ homegw_openvpn_default_filepath }}"
     regexp: "^AUTOSTART="
     line: 'AUTOSTART="{{ homegw_openvpn_name }}"'
   register: result

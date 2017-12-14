@@ -24,6 +24,5 @@ verb 3
 ## network definition
 topology subnet
 push "route {{ homegw_openvpn_global_hostprefix|ipaddr('address') }} 255.255.255.255 net_gateway"
-push "route 163.143.0.0 255.255.0.0"
-push "route {{ homegw_openvpn_global_hostprefix|ipaddr('network') }} {{ homegw_openvpn_global_hostprefix|ipaddr('netmask') }}"
+push "route {{ homegw_openvpn_internal_hostprefix|ipaddr('network') }} {{ homegw_openvpn_internal_hostprefix|ipaddr('netmask') }}"
 client-to-client

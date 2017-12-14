@@ -1,9 +1,10 @@
 ---
 # you need to specifiy following
 # your global ip address and netmask: "10.0.0.1/24"
-homegw_openvpn_global_hostprefix: "{{ ansible_default_ipv4.address }}"
+homegw_openvpn_internal_hostprefix: ""
 
-# you don't need to change the followings
+# you can change the followings, but don't need to do.
+homegw_openvpn_global_hostprefix: "{{ ansible_default_ipv4.address }}"
 
 # defaults file for ansible-homegw-openvpn
 homegw_openvpn_script_permission.owner: root

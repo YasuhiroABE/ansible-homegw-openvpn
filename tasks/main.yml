@@ -11,7 +11,7 @@
   become: True
   template:
     src:   server.conf.j2
-    dest:  /etc/openvpn/server.conf
+    dest:  "{{ homegw_openvpn_root_dirpath }}/{{ homegw_openvpn_name }}.conf"
     owner: "{{ homegw_openvpn_script_permission.owner }}"
     group: "{{ homegw_openvpn_script_permission.group }}"
     mode:  "{{ homegw_openvpn_script_permission.mode }}"
@@ -43,3 +43,10 @@
     - server_key_nopass.pem
   register: result
 
+- name: modify /etc/default/openvpn file
+  become: True
+  lineinfile:
+    path: {{ homegw_openvpn_default_filepath }}
+    regexp: "^AUTOSTART="
+    line: 'AUTOSTART="{{ homegw_openvpn_name }}"'
+  register: result

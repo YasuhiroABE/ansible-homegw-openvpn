@@ -21,3 +21,5 @@ homegw_openvpn_cacert_filename = cacert.pem
 homegw_openvpn_servercert_filename = server_cert.pem
 homegw_openvpn_serverkey_filename = server_key_nopass.pem
 homegw_openvpn_poolpersist_filename = ipp_1194.txt
+
+homegw_openvpn_default_filepath = /etc/default/openvpn

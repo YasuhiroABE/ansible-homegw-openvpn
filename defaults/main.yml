@@ -7,12 +7,12 @@ homegw_openvpn_internal_hostprefix: ""
 homegw_openvpn_global_hostprefix: "{{ ansible_default_ipv4.address }}"
 
 # defaults file for ansible-homegw-openvpn
-homegw_openvpn_script_permission.owner: root
-homegw_openvpn_script_permission.group: root
-homegw_openvpn_script_permission.mode: 400
-homegw_openvpn_directory_permission.owner: root
-homegw_openvpn_directory_permission.group: root
-homegw_openvpn_directory_permission.mode: 700
+homegw_openvpn_script_permission_owner: root
+homegw_openvpn_script_permission_group: root
+homegw_openvpn_script_permission_mode: 400
+homegw_openvpn_directory_permission_owner: root
+homegw_openvpn_directory_permission_group: root
+homegw_openvpn_directory_permission_mode: 700
 
 ## system config setting
 homegw_openvpn_name: p1194

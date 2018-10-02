@@ -1,19 +1,19 @@
 #
 # for external clients
-# - Do not use for internal (163.143.0.0/16) clients
+# - Do not use for internal clients
 #
 port {{ homegw_openvpn_port }}
 proto udp
 tls-server
-tls-auth {{ homegw_openvpn_name }}/{{ homegw_openvpn_tlsauth_filename }}
+tls-auth {{ homegw_openvpn_name }}/{{ homegw_openvpn_tlsauth_filepath | basename }} 0
 dev tun
-dh {{ homegw_openvpn_name }}/{{ homegw_openvpn_dh_filename }}
-ca {{ homegw_openvpn_name }}/{{ homegw_openvpn_cacert_filename }}
-cert {{ homegw_openvpn_name }}/{{ homegw_openvpn_servercert_filename }}
-key {{ homegw_openvpn_name }}/{{ homegw_openvpn_serverkey_filename }}
+dh {{ homegw_openvpn_name }}/{{ homegw_openvpn_dh_filepath | basename }}
+ca {{ homegw_openvpn_name }}/{{ homegw_openvpn_cacert_filepath | basename }}
+cert {{ homegw_openvpn_name }}/{{ homegw_openvpn_servercert_filepath | basename }}
+key {{ homegw_openvpn_name }}/{{ homegw_openvpn_serverkey_filepath | basename }}
 
-server 10.8.8.0 255.255.255.0
-ifconfig-pool-persist {{ homegw_openvpn_name }}/{{ homegw_openvpn_poolpersist_filename }}
+server {{ homegw_openvpn_conf_server_subnet }} {{ homegw_openvpn_conf_server_subnetmask }}
+ifconfig-pool-persist {{ homegw_openvpn_name }}/{{ homegw_openvpn_poolpersist_filepath | basename }}
 keepalive 10 120
 comp-lzo
 persist-key
@@ -24,5 +24,7 @@ verb 3
 ## network definition
 topology subnet
 push "route {{ homegw_openvpn_global_hostprefix|ipaddr('address') }} 255.255.255.255 net_gateway"
-push "route {{ homegw_openvpn_internal_hostprefix|ipaddr('network') }} {{ homegw_openvpn_internal_hostprefix|ipaddr('netmask') }}"
+{% for subnet in homegw_openvpn_push_hostprefix_list %}
+push "route {{ subnet | ipaddr('network') }} {{ subnet | ipaddr('netmask') }}"
+{% endfor %}
 client-to-client

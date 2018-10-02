@@ -1,28 +1,28 @@
 ---
-# you need to specifiy following
-# your global ip address and netmask: "10.0.0.1/24"
-homegw_openvpn_internal_hostprefix: ""
+# Please overwrite your private network with netmask: ["10.0.0.1/24"]
+homegw_openvpn_push_hostprefix_list: []
 
-# you can change the followings, but don't need to do.
+# you can change the followings.
 homegw_openvpn_global_hostprefix: "{{ ansible_default_ipv4.address }}"
 
 # defaults file for ansible-homegw-openvpn
-homegw_openvpn_script_permission_owner: root
-homegw_openvpn_script_permission_group: root
-homegw_openvpn_script_permission_mode: 400
-homegw_openvpn_directory_permission_owner: root
-homegw_openvpn_directory_permission_group: root
-homegw_openvpn_directory_permission_mode: 700
+homegw_openvpn_permission_owner: root
+homegw_openvpn_permission_group: root
+homegw_openvpn_permission_mode: "u+rwX,go-rwX"
 
 ## system config setting
 homegw_openvpn_name: p1194
 homegw_openvpn_root_dirpath: /etc/openvpn
 homegw_openvpn_port: 1194
-homegw_openvpn_tlsauth_filename: hmac_secret 0
-homegw_openvpn_dh_filename: dh2048.pem
-homegw_openvpn_cacert_filename: cacert.pem
-homegw_openvpn_servercert_filename: server_cert.pem
-homegw_openvpn_serverkey_filename: server_key_nopass.pem
-homegw_openvpn_poolpersist_filename: ipp_1194.txt
+homegw_openvpn_tlsauth_filepath: files/hmac_secret
+homegw_openvpn_dh_filepath: files/dh2048.pem
+homegw_openvpn_cacert_filepath: files/cacert.pem
+homegw_openvpn_servercert_filepath: files/server_cert.pem
+homegw_openvpn_serverkey_filepath: files/server_key_nopass.pem
+homegw_openvpn_poolpersist_filepath: files/ipp_1194.txt
 
+homegw_openvpn_conf_server_subnet: "10.8.8.0"
+homegw_openvpn_conf_server_subnetmask: "255.255.255.0"
+
+## for ubuntu/debian
 homegw_openvpn_default_filepath: /etc/default/openvpn

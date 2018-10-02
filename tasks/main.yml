@@ -12,9 +12,9 @@
   template:
     src:   server.conf.j2
     dest:  "{{ homegw_openvpn_root_dirpath }}/{{ homegw_openvpn_name }}.conf"
-    owner: "{{ homegw_openvpn_script_permission_owner }}"
-    group: "{{ homegw_openvpn_script_permission_group }}"
-    mode:  "{{ homegw_openvpn_script_permission_mode }}"
+    owner: "{{ homegw_openvpn_permission_owner }}"
+    group: "{{ homegw_openvpn_permission_group }}"
+    mode:  "{{ homegw_openvpn_permission_mode }}"
   register: result
 
 - name: setup config directory
@@ -22,25 +22,26 @@
   file:
     path: "{{ homegw_openvpn_root_dirpath }}/{{ homegw_openvpn_name }}"
     state: directory
-    owner: "{{ homegw_openvpn_directory_permission_owner }}"
-    group: "{{ homegw_openvpn_directory_permission_group }}"
-    mode:  "{{ homegw_openvpn_directory_permission_mode }}"
+    owner: "{{ homegw_openvpn_permission_owner }}"
+    group: "{{ homegw_openvpn_permission_group }}"
+    mode:  "{{ homegw_openvpn_permission_mode }}"
   register: result
   
 - name: setup if-pre-up.d file
   become: True
   copy: 
-    src:   "files/{{ item }}"
-    dest:  "{{ homegw_openvpn_root_dirpath }}/{{ homegw_openvpn_name }}/{{ item }}"
-    owner: "{{ homegw_openvpn_script_permission_owner }}"
-    group: "{{ homegw_openvpn_script_permission_group }}"
-    mode:  "{{ homegw_openvpn_script_permission_mode }}"
+    src:   "{{ item }}"
+    dest:  "{{ homegw_openvpn_root_dirpath }}/{{ homegw_openvpn_name }}/{{ item | basename }}"
+    owner: "{{ homegw_openvpn_permission_owner }}"
+    group: "{{ homegw_openvpn_permission_group }}"
+    mode:  "{{ homegw_openvpn_permission_mode }}"
   with_items:
-    - cacert.pem
-    - dh2048.pem
-    - hmac_secret
-    - server_cert.pem
-    - server_key_nopass.pem
+    - "{{ homegw_openvpn_cacert_filepath }}"
+    - "{{ homegw_openvpn_dh_filepath }}"
+    - "{{ homegw_openvpn_tlsauth_filepath }}"
+    - "{{ homegw_openvpn_servercert_filepath }}"
+    - "{{ homegw_openvpn_serverkey_filepath }}"
+    - "{{ homegw_openvpn_poolpersist_filepath }}"
   register: result
 
 - name: modify /etc/default/openvpn file
